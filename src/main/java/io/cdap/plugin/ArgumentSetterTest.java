@@ -56,13 +56,13 @@ import java.io.IOException;
  * </code>
  */
 @Plugin(type = Action.PLUGIN_TYPE)
-@Name("ArgumentSetter")
+@Name("ArgumentSetterTest")
 @Description("Argument setter for dynamically configuring pipeline.")
-public final class ArgumentSetter extends HTTPArgumentSetter<HTTPConfig> {
-  private static final Logger LOG = LoggerFactory.getLogger(ArgumentSetter.class);
+public final class ArgumentSetterTest extends HTTPArgumentSetter<HTTPConfig> {
+  private static final Logger LOG = LoggerFactory.getLogger(ArgumentSetterTest.class);
   private static final Gson gson = new Gson();
 
-  public ArgumentSetter(HTTPConfig conf) {
+  public ArgumentSetterTest(HTTPConfig conf) {
     super(conf);
   }
 
