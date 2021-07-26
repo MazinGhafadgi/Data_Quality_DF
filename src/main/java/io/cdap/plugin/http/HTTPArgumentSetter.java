@@ -12,7 +12,8 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */
+ *//*
+
 
 package io.cdap.plugin.http;
 
@@ -31,9 +32,11 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.util.Map;
 
+*/
 /**
  * Sets pipeline arguments for the run based on the contents of an http call.
- */
+ *//*
+
 public abstract class HTTPArgumentSetter<T extends HTTPConfig> extends Action {
   private static final Logger LOG = LoggerFactory.getLogger(HTTPArgumentSetter.class);
   protected final T conf;
@@ -91,3 +94,4 @@ public abstract class HTTPArgumentSetter<T extends HTTPConfig> extends Action {
 
   abstract protected void handleResponse(ActionContext context, String responseBody) throws Exception;
 }
+*/

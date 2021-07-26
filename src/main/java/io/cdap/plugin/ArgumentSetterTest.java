@@ -12,7 +12,8 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */
+ *//*
+
 
 package io.cdap.plugin;
 
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+*/
 /**
  * Generic argument setter for the pipeline based on retrieval of configuration from an HTTP endpoint.
  *
@@ -54,7 +56,8 @@ import java.io.IOException;
  *     ]
  *   }
  * </code>
- */
+ *//*
+
 @Plugin(type = Action.PLUGIN_TYPE)
 @Name("ArgumentSetterTest")
 @Description("Argument setter for dynamically configuring pipeline.")
@@ -85,3 +88,4 @@ public final class ArgumentSetterTest extends HTTPArgumentSetter<HTTPConfig> {
     }
   }
 }
+*/
