@@ -1,6 +1,8 @@
 package io.cdap.plugin.json.parser;
 
 import com.google.gson.Gson;
+import io.cdap.plugin.GCSPath;
+import io.cdap.plugin.MazinGCSArgumentSetter;
 import io.cdap.plugin.proto.Configuration;
 
 
@@ -42,11 +44,11 @@ public class JsonParserApp {
                 "    {\n" +
                 "      \"ruleName\": \"isEmail\",\n" +
                 "      \"column\": \"body\"\n" +
-                "    },\n" +
+                "    }\n" +
                 "  ]\n" +
                 "}";
 
-
+        System.out.println(rules);
         DQConfig configuration = gson.fromJson(dqConfig, DQConfig.class);
         System.out.println(configuration);
 
@@ -61,6 +63,23 @@ public class JsonParserApp {
 
         DQRules dqRules = gson.fromJson(rules, DQRules.class);
         System.out.println(dqRules);
+
+        String ruleBuilder = "";
+        for (Rule rule : dqRules.getRules()) {
+            String name = rule.getRuleName();
+            String column = rule.getColumn();
+            if (column != null) {
+                ruleBuilder = ruleBuilder + "send-to-error " + "dq:" + name + "(" + column + ") \n";
+            } else {
+                throw new RuntimeException(
+                        "Configuration '" + name + "' is null. Cannot set argument to null.");
+            }
+        }
+        System.out.println(ruleBuilder);
+
+        GCSPath path = GCSPath.from("gs://reuable-pipeline-bucket/dqRules.json");
+        System.out.println("path=" + path.getBucket());
+        System.out.println("" + path.getName());
 
         //TODO
         // build data fusion dq rules from dqRules and set it into settable argument , set("dqRules", rules)

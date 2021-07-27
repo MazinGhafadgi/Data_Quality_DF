@@ -17,6 +17,9 @@ import io.cdap.cdap.etl.api.PipelineConfigurer;
 import io.cdap.cdap.etl.api.StageConfigurer;
 import io.cdap.cdap.etl.api.action.Action;
 import io.cdap.cdap.etl.api.action.ActionContext;
+import io.cdap.plugin.json.parser.DQConfig;
+import io.cdap.plugin.json.parser.DQRules;
+import io.cdap.plugin.json.parser.Rule;
 import io.cdap.plugin.util.GCPUtils;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,17 +72,31 @@ public final class MazinGCSArgumentSetter extends Action {
         String fileContent = MazinGCSArgumentSetter.getContent(config);
 
         try {
-            Configuration configuration = new GsonBuilder().create().fromJson(fileContent, Configuration.class);
-            for (Argument argument : configuration.getArguments()) {
-                String name = argument.getName();
-                String value = argument.getValue();
-                if (value != null) {
-                    context.getArguments().set(name, value);
+            DQConfig dqConfig = new GsonBuilder().create().fromJson(fileContent, DQConfig.class);
+            //set sourcePath
+            context.getArguments().set("sourcePath", dqConfig.getSourcePath());
+            //set sink
+            context.getArguments().set("sinkPath", dqConfig.getSinkPath());
+
+            Storage storage = getStorage(config);
+            GCSPath path = GCSPath.from(dqConfig.getDqConfigPath());
+            Blob blob = storage.get(path.getBucket(), path.getName());
+            String dqRulesContent =  new String(blob.getContent());
+            DQRules dqRules = new GsonBuilder().create().fromJson(dqRulesContent, DQRules.class);
+
+             String rules = "";
+             for (Rule rule : dqRules.getRules()) {
+                String name = rule.getRuleName();
+                String column = rule.getColumn();
+                if (column != null) {
+                    rules = rules + "send-to-error " + "!dq:" + name + "(" + column + ")" + "\n";
                 } else {
                     throw new RuntimeException(
                             "Configuration '" + name + "' is null. Cannot set argument to null.");
                 }
             }
+             //set directives
+            context.getArguments().set("directives", rules);
         } catch (JsonSyntaxException e) {
             throw new RuntimeException(
                     String.format(
