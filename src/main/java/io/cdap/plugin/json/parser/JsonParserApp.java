@@ -42,7 +42,7 @@ public class JsonParserApp {
         String rules = "{\n" +
                 "  \"rules\" : [\n" +
                 "    {\n" +
-                "      \"ruleName\": \"isEmail\",\n" +
+                "      \"ruleName\": \"!isEmail\",\n" +
                 "      \"column\": \"body\"\n" +
                 "    }\n" +
                 "  ]\n" +

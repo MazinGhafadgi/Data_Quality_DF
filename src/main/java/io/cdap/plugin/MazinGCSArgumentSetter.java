@@ -88,8 +88,10 @@ public final class MazinGCSArgumentSetter extends Action {
              for (Rule rule : dqRules.getRules()) {
                 String name = rule.getRuleName();
                 String column = rule.getColumn();
+                String action = rule.getAction();
                 if (column != null) {
-                    rules = rules + "send-to-error " + "!dq:" + name + "(" + column + ")" + "\n";
+                    String dq = name.contains("!") ? "!dq:" : "dq:";
+                    rules = rules + action + " " + dq + name.replace("!", "") + "(" + column + ")" + "\n";
                 } else {
                     throw new RuntimeException(
                             "Configuration '" + name + "' is null. Cannot set argument to null.");
