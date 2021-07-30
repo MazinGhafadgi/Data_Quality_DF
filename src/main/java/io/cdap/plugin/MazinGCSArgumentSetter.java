@@ -78,13 +78,21 @@ public final class MazinGCSArgumentSetter extends Action {
             //set sink
             context.getArguments().set("sinkPath", dqConfig.getSinkPath());
 
+            //yyyy-MM-dd-HH-mm
+            context.getArguments().set("partition", "yyyy-MM-dd-HH-mm");
+
+
             Storage storage = getStorage(config);
             GCSPath path = GCSPath.from(dqConfig.getDqConfigPath());
             Blob blob = storage.get(path.getBucket(), path.getName());
             String dqRulesContent =  new String(blob.getContent());
             DQRules dqRules = new GsonBuilder().create().fromJson(dqRulesContent, DQRules.class);
 
-             String rules = "";
+             String rules = "parse-as-csv body , true \n drop body\n";
+            //TODO
+            //drop body
+            //set schema
+           context.getArguments().set("schemaRef", "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"email\",\"type\":\"string\"}]}");
              for (Rule rule : dqRules.getRules()) {
                 String name = rule.getRuleName();
                 String column = rule.getColumn();
