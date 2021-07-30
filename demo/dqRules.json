@@ -1,0 +1,14 @@
+{
+  "rules" : [
+    {
+      "ruleName": "isempty",
+      "column": "name",
+      "action": "send-to-error"
+    },
+    {
+      "ruleName": "!isEmail",
+      "column": "email",
+      "action": "send-to-error"
+    }
+  ]
+}

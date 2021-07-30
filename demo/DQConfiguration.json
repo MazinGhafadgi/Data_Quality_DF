@@ -1,0 +1,6 @@
+ {
+   "sourcePath":"gs://reuable-pipeline-bucket/user-emails.txt",
+   "sinkPath": "gs://reuable-pipeline-bucket/output", 
+   "dqConfigPath":"gs://reuable-pipeline-bucket/dqRules.json"
+ }
+        
