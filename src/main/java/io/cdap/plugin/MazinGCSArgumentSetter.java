@@ -89,9 +89,11 @@ public final class MazinGCSArgumentSetter extends Action {
             DQRules dqRules = new GsonBuilder().create().fromJson(dqRulesContent, DQRules.class);
 
              String rules = "parse-as-csv body , true \n drop body\n";
-            //TODO
-            //drop body
-            //set schema
+
+             //TODO
+            //make sure the plugin works with bigquery or other repositories , like collibra.
+            //you need to configure a falg in configuration.json for the source type of the configuration example GS or bigQuery or http.
+
            context.getArguments().set("schemaRef", "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"email\",\"type\":\"string\"}]}");
              for (Rule rule : dqRules.getRules()) {
                 String name = rule.getRuleName();
