@@ -42,8 +42,9 @@ public class JsonParserApp {
         String rules = "{\n" +
                 "  \"rules\" : [\n" +
                 "    {\n" +
-                "      \"ruleName\": \"!isEmail\",\n" +
-                "      \"column\": \"body\"\n" +
+                "      \"ruleName\": \"isempty\",\n" +
+                "      \"column\": \"name\",\n" +
+                "      \"action\": \"send-to-error\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
@@ -65,17 +66,22 @@ public class JsonParserApp {
         System.out.println(dqRules);
 
         String ruleBuilder = "";
+        String directives = "parse-as-csv body , true \n drop body\n";
         for (Rule rule : dqRules.getRules()) {
             String name = rule.getRuleName();
             String column = rule.getColumn();
+            String error = " mazinMetric ' Mazin is a great programmer' 'eng-mechanism-316510:employee'";
+            //"send-to-error exp:{ dq:isempty(C)}" + error,
+            String action = rule.getAction();
             if (column != null) {
-                ruleBuilder = ruleBuilder + "send-to-error " + "dq:" + name + "(" + column + ") \n";
+                String dq = name.contains("!") ? "!dq:" : "dq:";
+                directives = directives + action + " " + "exp:{" + dq + name.replace("!", "") + "(" + column + ")" + "}" + error + "\n";
             } else {
                 throw new RuntimeException(
                         "Configuration '" + name + "' is null. Cannot set argument to null.");
             }
         }
-        System.out.println(ruleBuilder);
+        System.out.println(directives);
 
         GCSPath path = GCSPath.from("gs://reuable-pipeline-bucket/dqRules.json");
         System.out.println("path=" + path.getBucket());

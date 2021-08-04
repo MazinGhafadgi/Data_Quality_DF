@@ -93,15 +93,21 @@ public final class MazinGCSArgumentSetter extends Action {
              //TODO
             //make sure the plugin works with bigquery or other repositories , like collibra.
             //you need to configure a falg in configuration.json for the source type of the configuration example GS or bigQuery or http.
+            //TODO
+            // need to develop new directive called send-to-bigquery-error.
+            //follow the instruction here on how to write to big query table
+            //https://cloud.google.com/bigquery/streaming-data-into-bigquery
 
            context.getArguments().set("schemaRef", "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"email\",\"type\":\"string\"}]}");
              for (Rule rule : dqRules.getRules()) {
                 String name = rule.getRuleName();
                 String column = rule.getColumn();
+                String error = " mazinMetric ' Mazin is a great programmer' 'eng-mechanism-316510:employee'";
+                //"send-to-error exp:{ dq:isempty(C)}" + error,
                 String action = rule.getAction();
                 if (column != null) {
                     String dq = name.contains("!") ? "!dq:" : "dq:";
-                    rules = rules + action + " " + dq + name.replace("!", "") + "(" + column + ")" + "\n";
+                    rules = rules + action + " " + "exp:{" + dq + name.replace("!", "") + "(" + column + ")" + "}" + error + "\n";
                 } else {
                     throw new RuntimeException(
                             "Configuration '" + name + "' is null. Cannot set argument to null.");
