@@ -78,3 +78,19 @@ Following are the argument types supported by the system:
 | char | Defines the value as char type |
 | array | Defines the value as array of string type |
 | map | Defines the value of map |
+
+
+upload the following plugins in Data fusion
+wrangler-api
+wrangler-core
+wrangler-proto
+wrangler-service
+wrangler-storage
+wrangler-transform
+
+and then upload 
+argument-setter-plugin
+
+and then deploy and run
+DQ_pipeline_latest.json
+
